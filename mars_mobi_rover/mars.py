@@ -5,16 +5,11 @@
 from mars_mobi_rover.mobi import Rover
 
 
-NORTH = "N"
-EAST = "E"
-SOUTH = "S"
-WEST = "W"
-
 DIRECTIONS = [
-    NORTH,
-    EAST,
-    SOUTH,
-    WEST
+    "N",
+    "E",
+    "S",
+    "W"
 ]
 
 

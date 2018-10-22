@@ -3,8 +3,9 @@
 
 from unittest import TestCase
 
+from mars_mobi_rover import Bounderies
 from mars_mobi_rover.mars import Coordinate
-from mars_mobi_rover.mobi import Rover
+from mars_mobi_rover.mobi import OutOfBoundsException, Rover
 
 
 class TestRovers(TestCase):
@@ -38,10 +39,127 @@ class TestRovers(TestCase):
         self.rover1.turn_left()
         self.assertEqual(self.rover1.current_coordinate.heading, 'E')
 
-    # def test_x_coordinate_move(self):
-    #     """Test X coordinate movement"""
-    #     self.fail()
+    def test_y_coordinate_move(self):
+        """Test Y coordinate movement"""
+        rover1 = Rover(
+            name="Rover1", landing_coordinate=Coordinate(0, 0, 'N'))
+        rover1.move_forward()
+        self.assertEquals(rover1.current_coordinate.y, 1)
+        rover1.turn_left()
+        rover1.turn_left()
+        rover1.move_forward()
+        self.assertEquals(rover1.current_coordinate.y, 0)
 
-    # def test_y_coordinate_move(self):
-    #     """Test Y coordinate movement"""
-    #     self.fail()
+    def test_x_coordinate_move(self):
+        """Test X coordinate movement"""
+        rover1 = Rover(
+            name="Rover1", landing_coordinate=Coordinate(0, 0, 'E'))
+        rover1.move_forward()
+        self.assertEquals(rover1.current_coordinate.x, 1)
+        rover1.turn_left()
+        rover1.turn_left()
+        rover1.move_forward()
+        self.assertEquals(rover1.current_coordinate.x, 0)
+
+    def test_y_coordinate_move_with_bounderies(self):
+        """Test Y coordinate movement with bounderies"""
+        rover1 = Rover(
+            name="Rover1", landing_coordinate=Coordinate(0, 0, 'N'))
+        bound = Bounderies(5, 5)
+        rover1.move_forward(bound)
+        self.assertEquals(rover1.current_coordinate.y, 1)
+        rover1.move_forward(bound)
+        rover1.move_forward(bound)
+        rover1.move_forward(bound)
+        rover1.move_forward(bound)
+        self.assertEquals(rover1.current_coordinate.y, 5)
+        rover1.turn_left()
+        rover1.turn_left()
+        rover1.move_forward(bound)
+        rover1.move_forward(bound)
+        rover1.move_forward(bound)
+        rover1.move_forward(bound)
+        rover1.move_forward(bound)
+        self.assertEquals(rover1.current_coordinate.y, 0)
+
+    def test_x_coordinate_move_with_bounderies(self):
+        """Test X coordinate movement with bounderies"""
+        rover1 = Rover(
+            name="Rover1", landing_coordinate=Coordinate(0, 0, 'E'))
+        bound = Bounderies(5, 5)
+        rover1.move_forward(bound)
+        self.assertEquals(rover1.current_coordinate.x, 1)
+        rover1.move_forward(bound)
+        rover1.move_forward(bound)
+        rover1.move_forward(bound)
+        rover1.move_forward(bound)
+        self.assertEquals(rover1.current_coordinate.x, 5)
+        rover1.turn_left()
+        rover1.turn_left()
+        rover1.move_forward(bound)
+        rover1.move_forward(bound)
+        rover1.move_forward(bound)
+        rover1.move_forward(bound)
+        rover1.move_forward(bound)
+        self.assertEquals(rover1.current_coordinate.x, 0)
+
+    def test_fail_top_bound(self):
+        """Test move forward fail top bound"""
+        rover1 = Rover(
+            name="Rover1", landing_coordinate=Coordinate(0, 0, 'S'))
+        bound = Bounderies(5, 5)
+        with self.assertRaises(OutOfBoundsException):
+            rover1.move_forward(bound)
+
+    def test_fail_botton_bound(self):
+        """Test move forward fail botton bound"""
+        rover1 = Rover(
+            name="Rover1", landing_coordinate=Coordinate(0, 5, 'N'))
+        bound = Bounderies(5, 5)
+        with self.assertRaises(OutOfBoundsException):
+            rover1.move_forward(bound)
+
+    def test_fail_left_bound(self):
+        """Test move forward fail left bound"""
+        rover1 = Rover(
+            name="Rover1", landing_coordinate=Coordinate(0, 0, 'W'))
+        bound = Bounderies(5, 5)
+        with self.assertRaises(OutOfBoundsException):
+            rover1.move_forward(bound)
+
+    def test_fail_right_bound(self):
+        """Test move forward fail right bound"""
+        rover1 = Rover(
+            name="Rover1", landing_coordinate=Coordinate(5, 0, 'E'))
+        bound = Bounderies(5, 5)
+        with self.assertRaises(OutOfBoundsException):
+            rover1.move_forward(bound)
+
+    def test_rover_instructions(self):
+        """Test rover instruction set execution"""
+        rover1 = Rover(
+            name="Rover1", landing_coordinate=Coordinate(0, 0, 'N'))
+        bound = Bounderies(5, 5)
+        instruction_set = "MMRMMLMLMLM"
+        # Excepect coordinate 1, 2 S
+        rover1.execute_instructions(instruction_set, bound)
+        self.assertEqual(rover1.current_coordinate, Coordinate(1, 2, 'S'))
+
+    def test_rover_instructions_out_of_bounds(self):
+        """Test rover instruction set execution with OutOfBounds"""
+        rover1 = Rover(
+            name="Rover1", landing_coordinate=Coordinate(0, 0, 'N'))
+        bound = Bounderies(5, 5)
+        instruction_set = "MMMMMMMRMMRMM"
+        # Excepect coordinate 1, 2 S
+        rover1.execute_instructions(instruction_set, bound)
+        self.assertEqual(rover1.current_coordinate, Coordinate(2, 3, 'S'))
+
+    def test_rover_instruction_bad_bounds(self):
+        """Test rover instruction set execution with bad bounds"""
+        rover1 = Rover(
+            name="Rover1", landing_coordinate=Coordinate(0, 0, 'N'))
+        bound = float(9)
+        instruction_set = "MMRMMLMLMLM"
+        with self.assertRaises(TypeError):
+            rover1.execute_instructions(instruction_set, bound)
