@@ -3,20 +3,8 @@ Mars Mobi Rover
 ===============
 
 
-.. image:: https://img.shields.io/pypi/v/mars_mobi_rover.svg
-        :target: https://pypi.python.org/pypi/mars_mobi_rover
-
 .. image:: https://img.shields.io/travis/gzamboni/mars_mobi_rover.svg
         :target: https://travis-ci.org/gzamboni/mars_mobi_rover
-
-.. image:: https://readthedocs.org/projects/mars-mobi-rover/badge/?version=latest
-        :target: https://mars-mobi-rover.readthedocs.io/en/latest/?badge=latest
-        :alt: Documentation Status
-
-
-.. image:: https://pyup.io/repos/github/gzamboni/mars_mobi_rover/shield.svg
-     :target: https://pyup.io/repos/github/gzamboni/mars_mobi_rover/
-     :alt: Updates
 
 
 
