@@ -3,8 +3,7 @@
 
 from unittest import TestCase
 
-from mars_mobi_rover import Bounderies
-from mars_mobi_rover.mars import Coordinate
+from mars_mobi_rover.mars import Coordinate, boundaries
 from mars_mobi_rover.mobi import OutOfBoundsException, Rover
 
 
@@ -15,6 +14,9 @@ class TestRovers(TestCase):
         """setup common objects for unit tests"""
         self.rover1 = Rover(
             name="Rover1", landing_coordinate=Coordinate(0, 0, 'N'))
+
+    def tearDown(self):
+        del self.rover1
 
     def test_rover_object(self):
         """Test Rover Class"""
@@ -61,11 +63,11 @@ class TestRovers(TestCase):
         rover1.move_forward()
         self.assertEquals(rover1.current_coordinate.x, 0)
 
-    def test_y_coordinate_move_with_bounderies(self):
-        """Test Y coordinate movement with bounderies"""
+    def test_y_coordinate_move_with_boundaries(self):
+        """Test Y coordinate movement with boundaries"""
         rover1 = Rover(
             name="Rover1", landing_coordinate=Coordinate(0, 0, 'N'))
-        bound = Bounderies(5, 5)
+        bound = boundaries(5, 5)
         rover1.move_forward(bound)
         self.assertEquals(rover1.current_coordinate.y, 1)
         rover1.move_forward(bound)
@@ -82,11 +84,11 @@ class TestRovers(TestCase):
         rover1.move_forward(bound)
         self.assertEquals(rover1.current_coordinate.y, 0)
 
-    def test_x_coordinate_move_with_bounderies(self):
-        """Test X coordinate movement with bounderies"""
+    def test_x_coordinate_move_with_boundaries(self):
+        """Test X coordinate movement with boundaries"""
         rover1 = Rover(
             name="Rover1", landing_coordinate=Coordinate(0, 0, 'E'))
-        bound = Bounderies(5, 5)
+        bound = boundaries(5, 5)
         rover1.move_forward(bound)
         self.assertEquals(rover1.current_coordinate.x, 1)
         rover1.move_forward(bound)
@@ -107,7 +109,7 @@ class TestRovers(TestCase):
         """Test move forward fail top bound"""
         rover1 = Rover(
             name="Rover1", landing_coordinate=Coordinate(0, 0, 'S'))
-        bound = Bounderies(5, 5)
+        bound = boundaries(5, 5)
         with self.assertRaises(OutOfBoundsException):
             rover1.move_forward(bound)
 
@@ -115,7 +117,7 @@ class TestRovers(TestCase):
         """Test move forward fail botton bound"""
         rover1 = Rover(
             name="Rover1", landing_coordinate=Coordinate(0, 5, 'N'))
-        bound = Bounderies(5, 5)
+        bound = boundaries(5, 5)
         with self.assertRaises(OutOfBoundsException):
             rover1.move_forward(bound)
 
@@ -123,7 +125,7 @@ class TestRovers(TestCase):
         """Test move forward fail left bound"""
         rover1 = Rover(
             name="Rover1", landing_coordinate=Coordinate(0, 0, 'W'))
-        bound = Bounderies(5, 5)
+        bound = boundaries(5, 5)
         with self.assertRaises(OutOfBoundsException):
             rover1.move_forward(bound)
 
@@ -131,7 +133,7 @@ class TestRovers(TestCase):
         """Test move forward fail right bound"""
         rover1 = Rover(
             name="Rover1", landing_coordinate=Coordinate(5, 0, 'E'))
-        bound = Bounderies(5, 5)
+        bound = boundaries(5, 5)
         with self.assertRaises(OutOfBoundsException):
             rover1.move_forward(bound)
 
@@ -139,7 +141,7 @@ class TestRovers(TestCase):
         """Test rover instruction set execution"""
         rover1 = Rover(
             name="Rover1", landing_coordinate=Coordinate(0, 0, 'N'))
-        bound = Bounderies(5, 5)
+        bound = boundaries(5, 5)
         instruction_set = "MMRMMLMLMLM"
         # Excepect coordinate 1, 2 S
         rover1.execute_instructions(instruction_set, bound)
@@ -149,7 +151,7 @@ class TestRovers(TestCase):
         """Test rover instruction set execution with OutOfBounds"""
         rover1 = Rover(
             name="Rover1", landing_coordinate=Coordinate(0, 0, 'N'))
-        bound = Bounderies(5, 5)
+        bound = boundaries(5, 5)
         instruction_set = "MMMMMMMRMMRMM"
         # Excepect coordinate 1, 2 S
         rover1.execute_instructions(instruction_set, bound)
@@ -163,3 +165,19 @@ class TestRovers(TestCase):
         instruction_set = "MMRMMLMLMLM"
         with self.assertRaises(TypeError):
             rover1.execute_instructions(instruction_set, bound)
+
+    def test_rover_object_ne(self):
+        """Test not Equal operator for Rover Class"""
+
+        rover1 = Rover(
+            name="Rover1", landing_coordinate=Coordinate(0, 0, 'N'))
+        rover2 = Rover(
+            name="Rover2", landing_coordinate=Coordinate(0, 0, 'N'))
+        self.assertEqual(self.rover1, rover1)
+        self.assertNotEqual(self.rover1, rover2)
+
+    def test_rover_string(self):
+        """Test string representation of a Rover object"""
+        rover1 = Rover(
+            name="Rover1", landing_coordinate=Coordinate(0, 0, 'N'))
+        self.assertEqual(rover1.__str__(), "Rover1:0 0 N")

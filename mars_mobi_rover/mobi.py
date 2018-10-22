@@ -17,12 +17,20 @@ class Rover(object):
         self.name = name
         self.current_coordinate = landing_coordinate
 
-    def __eq__(a, b):
-        """Equals operator"""
+    def __eq__(self, other):
+        """Equals operator for Rover class"""
         return (
-            (a.name == b.name) and
-            (a.current_coordinate == b.current_coordinate)
+            (self.name == other.name) and
+            (self.current_coordinate == other.current_coordinate)
         )
+
+    def __ne__(self, other):
+        """Not equals operator for Rover Class"""
+        return not self.__eq__(other)
+
+    def __str__(self):
+        """String Representation of a rover object"""
+        return "{0}:{1}".format(self.name, self.current_coordinate)
 
     def turn_left(self):
         """Truns rover left
@@ -45,11 +53,11 @@ class Rover(object):
             direction_index + 1) % len(mars.DIRECTIONS)
         self.current_coordinate.heading = mars.DIRECTIONS[new_direction_index]
 
-    def move_forward(self, bounderies=None):
+    def move_forward(self, boundaries=None):
         """Move rover forward on Coordinate heading
 
         Keyword Arguments:
-            bounderies {Bounderies} -- Bounderies of an Plateau
+            boundaries {boundaries} -- boundaries of an Plateau
             (default: {None})
         """
 
@@ -68,24 +76,24 @@ class Rover(object):
         elif heading == 'E':
             new_location.x += 1
 
-        if bounderies is not None:
-            if isinstance(bounderies, mars.Bounderies):
-                if bounderies.check_move(new_location):
+        if boundaries is not None:
+            if isinstance(boundaries, mars.boundaries):
+                if boundaries.check_move(new_location):
                     self.current_coordinate = new_location
                 else:
                     raise OutOfBoundsException(
-                        'Rover {0} out of bounderies'.format(self.name)
+                        'Rover {0} out of boundaries'.format(self.name)
                     )
             else:
                 raise TypeError(
-                    'A Bounderies object was expected. Received {0}'.format(
-                        type(bounderies)
+                    'A boundaries object was expected. Received {0}'.format(
+                        type(boundaries)
                     )
                 )
         else:
             self.current_coordinate = new_location
 
-    def execute_instructions(self, instruction_set, bounderies=None):
+    def execute_instructions(self, instruction_set, boundaries=None):
         """Execute the instruction set on current rover
 
         Arguments:
@@ -103,6 +111,6 @@ class Rover(object):
                     self.turn_right()
                 else:
                     try:
-                        self.move_forward(bounderies)
+                        self.move_forward(boundaries)
                     except OutOfBoundsException:
                         pass

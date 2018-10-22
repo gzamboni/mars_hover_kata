@@ -40,10 +40,10 @@ Rover2 Instructions:MMRMMRMRRM"""
         self.assertEqual(parser._input_instructions, self.stdin_text)
         plateau = parser.get_plateau()
         self.assertIsInstance(plateau, Plateau)
-        self.assertEqual(plateau.bounderies.x_min, 0)
-        self.assertEqual(plateau.bounderies.x_max, 5)
-        self.assertEqual(plateau.bounderies.y_min, 0)
-        self.assertEqual(plateau.bounderies.y_max, 5)
+        self.assertEqual(plateau.boundaries.x_min, 0)
+        self.assertEqual(plateau.boundaries.x_max, 5)
+        self.assertEqual(plateau.boundaries.y_min, 0)
+        self.assertEqual(plateau.boundaries.y_max, 5)
 
     def test_stdin_parser_fail(self):
         """Test for no Plateau configuration on input"""
@@ -74,6 +74,9 @@ Rover2 Instructions:MMRMMRMRRM"""
         parser = InputParser(self.random_data)
         with self.assertRaises(ValueError):
             parser.get_rover_list()
+        parser = InputParser("")
+        with self.assertRaises(ValueError):
+            parser.get_rover_list()
 
     def test_mission_instructions_parser(self):
         """Test mission instructions parser method"""
@@ -96,5 +99,8 @@ Rover2 Instructions:MMRMMRMRRM"""
     def test_mission_instructions_parser_no_data(self):
         """Test for no data for mission instructions parser method"""
         parser = InputParser(self.random_data)
+        with self.assertRaises(ValueError):
+            parser.get_mission_instructions()
+        parser = InputParser("")
         with self.assertRaises(ValueError):
             parser.get_mission_instructions()

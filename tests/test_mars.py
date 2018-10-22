@@ -4,18 +4,18 @@
 
 from unittest import TestCase
 
-from mars_mobi_rover.mars import Bounderies, Plateau, Coordinate
+from mars_mobi_rover.mars import boundaries, Plateau, Coordinate
 from mars_mobi_rover.mobi import Rover
 
 
-class TestBounderies(TestCase):
-    """Unit test case for Bounderies Class"""
+class Testboundaries(TestCase):
+    """Unit test case for boundaries Class"""
 
     def setUp(self):
-        self.bound = Bounderies(10, 10)
+        self.bound = boundaries(10, 10)
 
-    def test_bounderies_object(self):
-        """Test Bounderies Object"""
+    def test_boundaries_object(self):
+        """Test boundaries Object"""
         self.assertEquals(self.bound.x_min, 0)
         self.assertEquals(self.bound.y_min, 0)
         self.assertEquals(self.bound.x_max, 10)
@@ -44,6 +44,11 @@ class TestBounderies(TestCase):
         self.assertFalse(self.bound.check_move(new_location))
         new_location = Coordinate(1, -1, 'S')
         self.assertFalse(self.bound.check_move(new_location))
+
+    def test_boundaries_object_operators(self):
+        """Test boundaries Object Equals and Not Equals"""
+        self.assertEquals(self.bound, boundaries(10, 10))
+        self.assertNotEquals(self.bound, boundaries(11, 10))
 
 
 class TestCoordinate(TestCase):
@@ -106,9 +111,9 @@ class TestMarsPlateaus(TestCase):
 
     def test_mars_Plateau(self):
         """Test Plateau Class Constructor"""
-        self.assertIsInstance(self.Plateau.bounderies, Bounderies)
-        self.assertEqual(self.Plateau.bounderies.x_max, 5)
-        self.assertEqual(self.Plateau.bounderies.y_max, 5)
+        self.assertIsInstance(self.Plateau.boundaries, boundaries)
+        self.assertEqual(self.Plateau.boundaries.x_max, 5)
+        self.assertEqual(self.Plateau.boundaries.y_max, 5)
 
     def test_Plateaus_rovers(self):
         """Test Rovers on Plateau"""
@@ -122,15 +127,12 @@ class TestMarsPlateaus(TestCase):
         no_result = self.Plateau.get_rover("yadayadayada")
         self.assertIsNone(no_result)
 
-    def test_duplicate_rover_name(self):
-        """Test duplicated rover"""
-        new_dup_rover1 = Rover(
-            name='Rover1', landing_coordinate=Coordinate(0, 0, 'N')
-        )
-        with self.assertRaises(ValueError):
-            self.Plateau.add_rover(new_dup_rover1)
-
     def test_add_rover_type_error(self):
         """Test add wrong type exception"""
         with self.assertRaises(TypeError):
             self.Plateau.add_rover(object)
+
+    def test_mars_Plateau_operators(self):
+        """Test Plateau Class eq and ne operators"""
+        self.assertEqual(self.Plateau, Plateau(5, 5))
+        self.assertNotEqual(self.Plateau, Plateau(5, 4))

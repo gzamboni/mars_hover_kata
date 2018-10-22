@@ -33,6 +33,7 @@ class InputParser(object):
     """
 
     def __init__(self, stdin_text):
+        self._lines = []
         if stdin_text:
             self._input_instructions = stdin_text
             self._lines = self._input_instructions.splitlines()
@@ -71,13 +72,15 @@ class InputParser(object):
                         line
                     )
                     if rover_data and len(rover_data.groups()) == 4:
+                        x = int(float(rover_data.group(2)))
+                        y = int(float(rover_data.group(3)))
+                        coordinate = Coordinate(
+                            x,
+                            y,
+                            rover_data.group(4)
+                        )
                         new_rover = Rover(
-                            rover_data.group(1),
-                            Coordinate(
-                                int(float(rover_data.group(2))),
-                                int(float(rover_data.group(3))),
-                                rover_data.group(4)
-                            )
+                            rover_data.group(1), coordinate
                         )
                         rover_list.append(new_rover)
                     else:
