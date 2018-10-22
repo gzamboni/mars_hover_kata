@@ -1,0 +1,3 @@
+Plateau\:(\d*)\s(\d*)
+(\w*)\sLanding:(\d*)\s(\d*)\s(N|S|E|W)
+(\w*)\sInstructions:([L|R|M]*)

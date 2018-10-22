@@ -3,13 +3,11 @@
 
 """Tests for `mars_mobi_rover` package."""
 
-import pytest
 
 from unittest import TestCase
 
 from click.testing import CliRunner
 
-from mars_mobi_rover import mars_mobi_rover
 from mars_mobi_rover import cli
 
 
