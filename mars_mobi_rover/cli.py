@@ -9,9 +9,9 @@ import click
 @click.command()
 def main(args=None):
     """Console script for mars_mobi_rover."""
-    click.echo("Replace this message by putting your code into "
-               "mars_mobi_rover.cli.main")
-    click.echo("See click documentation at http://click.pocoo.org/")
+    stdin_text = click.get_text_stream('stdin').read()
+    if stdin_text:
+        click.echo(stdin_text)
     return 0
 
 

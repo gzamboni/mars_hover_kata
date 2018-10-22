@@ -106,9 +106,9 @@ class TestMarsPlateaus(TestCase):
 
     def test_mars_Plateau(self):
         """Test Plateau Class Constructor"""
-        self.assertIsInstance(self.Plateau._bounderies, Bounderies)
-        self.assertEqual(self.Plateau._bounderies.x_max, 5)
-        self.assertEqual(self.Plateau._bounderies.y_max, 5)
+        self.assertIsInstance(self.Plateau.bounderies, Bounderies)
+        self.assertEqual(self.Plateau.bounderies.x_max, 5)
+        self.assertEqual(self.Plateau.bounderies.y_max, 5)
 
     def test_Plateaus_rovers(self):
         """Test Rovers on Plateau"""

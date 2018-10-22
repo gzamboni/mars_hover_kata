@@ -90,6 +90,11 @@ class Plateau(object):
         else:
             raise TypeError('Only Rover objects can be added to Plateau Class')
 
+    @property
+    def bounderies(self):
+        """Return the plateau bounderies object"""
+        return self._bounderies
+
     def get_rover(self, rover_name):
         """Return a rover object by name
 
