@@ -11,7 +11,7 @@ Ready to run? Here's how to set up `mars_mobi_rover`.
 
 1. Clone the `mars_mobi_rover` repo on GitHub.
 
-    $ git clone git@github.com:your_name_here/mars_mobi_rover.git
+    $ git clone git@github.com:gzamboni/mars_mobi_rover.git
 
 2. Install all requirements
 
