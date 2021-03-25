@@ -45,7 +45,7 @@ pyparsing==2.2.2
 pytest==3.8.2
 pytest-runner==4.2
 pytz==2018.5
-PyYAML==5.1
+PyYAML==5.4
 readme-renderer==22.0
 requests==2.20.0
 requests-toolbelt==0.8.0
